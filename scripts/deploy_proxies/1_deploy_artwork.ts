@@ -44,7 +44,14 @@ async function main(): Promise<void> {
     await ArtworkResult.deployed();
 
 
-    console.log("ArtworkNFT deployed to:", ArtworkResult.address);
+    console.log("------------------ii---------ii---------------------")
+    console.log("----------------------------------------------------")
+    console.log("------------------ii---------ii---------------------")
+    console.log("We may update these following addresses at hardhatconfig.ts ")
+    console.log("----------------------------------------------------")
+
+
+    console.log("ArtworkNFT(artwork) deployed to:", ArtworkResult.address);
 }
 
 main()

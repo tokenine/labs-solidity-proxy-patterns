@@ -35,7 +35,7 @@ import "./libraries/AskHelper.sol";
 import "./libraries/BidHelper.sol";
 import "./libraries/TradeHelper.sol";
 
-contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, PausableUpgradeable {
+contract BidNFTV2 is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, PausableUpgradeable {
     using SafeMathUpgradeable for uint256;
     using SafeERC20Upgradeable for IERC20Upgradeable;
     using AddressUpgradeable for address;
@@ -63,6 +63,16 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
 
     EnumerableSet.AddressSet private _quoteErc20Tokens;
 
+    event Bid(
+        address indexed bidder,
+        uint256 indexed tokenId,
+        uint256 price,
+        address quoteTokenAddr,
+        uint256 timestamp
+    );
+
+    event CancelBidToken(address indexed bidder, uint256 indexed tokenId, uint256 timestamp);
+
     event Trade(
         address indexed seller,
         address indexed buyer,
@@ -70,31 +80,36 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         uint256 price,
         address quoteTokenAddr,
         uint256 fee,
-        uint256 feeToMinter
+        uint256 feeToMinter,
+        uint256 timestamp
     );
     event Ask(
         address indexed seller,
         uint256 indexed tokenId,
         uint256 price,
-        address quoteTokenAddr
+        address quoteTokenAddr,
+        uint256 timestamp
     );
-    event CancelSellToken(address indexed seller, uint256 indexed tokenId);
+    event CancelSellToken(address indexed seller, uint256 indexed tokenId, uint256 timestamp);
     event FeeAddressTransferred(
         address indexed previousOwner,
-        address indexed newOwner
+        address indexed newOwner,
+        uint256 timestamp
     );
     event SetFeePercent(
         address indexed seller,
         uint256 oldFeePercent,
-        uint256 newFeePercent
+        uint256 newFeePercent,
+        uint256 timestamp
     );
     event SetFeeToMinterPercent(
         address indexed seller,
         uint256 oldFeePercent,
-        uint256 newFeePercent
+        uint256 newFeePercent,
+        uint256 timestamp
     );
-    event AddSupportedQuoteToken(address indexed seller, address quoteToken);
-    event RemoveSupportedQuoteToken(address indexed seller, address quoteToken);
+    event AddSupportedQuoteToken(address indexed seller, address quoteToken, uint256 timestamp);
+    event RemoveSupportedQuoteToken(address indexed seller, address quoteToken, uint256 timestamp);
 
     modifier onlySupportTokens(address tokenAddr) {
         require(_quoteErc20Tokens.contains(tokenAddr));
@@ -136,9 +151,6 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         uint256 _feePercent,
         uint256 _feeToMinterPercent
     ) initializer public {
-        __ERC721Holder_init();
-        __Ownable_init();
-        __Pausable_init();
 
         require(_nftAddress != address(0) && _nftAddress != address(this));
 
@@ -156,9 +168,9 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         feeAddr = _feeAddr;
         feePercent = _feePercent;
         feeToMinterPercent = _feeToMinterPercent;
-        emit FeeAddressTransferred(address(0), feeAddr);
-        emit SetFeePercent(_msgSender(), 0, feePercent);
-        emit SetFeeToMinterPercent(_msgSender(), 0, feeToMinterPercent);
+        emit FeeAddressTransferred(address(0), feeAddr, block.timestamp);
+        emit SetFeePercent(_msgSender(), 0, feePercent, block.timestamp);
+        emit SetFeeToMinterPercent(_msgSender(), 0, feeToMinterPercent, block.timestamp);
     }
 
     function buyToken(uint256 _tokenId) external override whenNotPaused {
@@ -177,7 +189,7 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         require(_price != 0, "Price must be granter than zero");
         _asksMap.set(_tokenId, _price);
         _asksQuoteTokens[_tokenId] = _quoteTokenAddr;
-        emit Ask(_msgSender(), _tokenId, _price, _quoteTokenAddr);
+        emit Ask(_msgSender(), _tokenId, _price, _quoteTokenAddr, block.timestamp);
     }
 
     function readyToSellToken(
@@ -209,7 +221,7 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         _asksQuoteTokens[_tokenId] = _quoteTokenAddr;
         _tokenSellers[_tokenId] = _to;
         _userSellingTokens[_to].add(_tokenId);
-        emit Ask(_to, _tokenId, _price, _quoteTokenAddr);
+        emit Ask(_to, _tokenId, _price, _quoteTokenAddr, block.timestamp);
     }
 
     function cancelSellToken(uint256 _tokenId) external override whenNotPaused {
@@ -221,7 +233,7 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         _asksMap.remove(_tokenId);
         _userSellingTokens[_tokenSellers[_tokenId]].remove(_tokenId);
         delete _tokenSellers[_tokenId];
-        emit CancelSellToken(_msgSender(), _tokenId);
+        emit CancelSellToken(_msgSender(), _tokenId, block.timestamp);
     }
 
     function bidToken(uint256 _tokenId, uint256 _price)
@@ -297,7 +309,8 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
             price,
             _asksQuoteTokens[_tokenId],
             feeAmount,
-            feeToMinterPercent
+            feeToMinterPercent,
+            block.timestamp
         );
         delete _tokenSellers[_tokenId];
     }
@@ -348,7 +361,8 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
             bidEntry.price,
             bidEntry.quoteTokenAddr,
             feeAmount,
-            feeToMinterAmount
+            feeToMinterAmount,
+            block.timestamp
         );
         delete _tokenSellers[_tokenId];
     }
@@ -455,7 +469,7 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         require(quoteTokenAddr != address(0));
         require(!_quoteErc20Tokens.contains(quoteTokenAddr), "already exists");
         _quoteErc20Tokens.add(quoteTokenAddr);
-        emit AddSupportedQuoteToken(_msgSender(), quoteTokenAddr);
+        emit AddSupportedQuoteToken(_msgSender(), quoteTokenAddr, block.timestamp);
     }
 
     function removeSupportedQuoteToken(address quoteTokenAddr)
@@ -465,18 +479,18 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
     {
         require(_quoteErc20Tokens.contains(quoteTokenAddr), "not found");
         _quoteErc20Tokens.remove(quoteTokenAddr);
-        emit RemoveSupportedQuoteToken(_msgSender(), quoteTokenAddr);
+        emit RemoveSupportedQuoteToken(_msgSender(), quoteTokenAddr, block.timestamp);
     }
 
     function transferFeeAddress(address _feeAddr) external {
         require(_msgSender() == feeAddr, "FORBIDDEN");
         feeAddr = _feeAddr;
-        emit FeeAddressTransferred(_msgSender(), feeAddr);
+        emit FeeAddressTransferred(_msgSender(), feeAddr, block.timestamp);
     }
 
     function setFeePercent(uint256 _feePercent) external onlyOwner {
         require(feePercent != _feePercent, "No need to update");
-        emit SetFeePercent(_msgSender(), feePercent, _feePercent);
+        emit SetFeePercent(_msgSender(), feePercent, _feePercent, block.timestamp);
         feePercent = _feePercent;
     }
 
@@ -488,7 +502,8 @@ contract BidNFT is IBidNFT, ERC721HolderUpgradeable, OwnableUpgradeable, Pausabl
         emit SetFeeToMinterPercent(
             _msgSender(),
             feeToMinterPercent,
-            _feeToMinterPercent
+            _feeToMinterPercent,
+            block.timestamp
         );
         feeToMinterPercent = _feeToMinterPercent;
     }

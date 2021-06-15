@@ -13,14 +13,32 @@ import {
 
 async function main(): Promise<void> {
 
+  const {
+    bidnftProxy,
+    askhelper,
+    tradehelper
+  } = await getNamedAccounts();
 
-  const { bidnftProxy } = await getNamedAccounts();
 
   const newImplName = 'BidNFTV2';
-  const NewImpl = await ethers.getContractFactory(newImplName);
+  const NewImpl = await ethers.getContractFactory(
+    newImplName,
+    {
+      libraries: {
+        AskHelper: askhelper,
+        TradeHelper: tradehelper
+      }
+    }
+    );
   console.log(`Upgrading to ${newImplName}...`);
 
-  await upgrades.upgradeProxy(bidnftProxy, NewImpl);
+  await upgrades.upgradeProxy(
+    bidnftProxy,
+    NewImpl,
+    { 
+      unsafeAllow: ['external-library-linking']
+    }
+    );
   console.log(`BidNFT upgraded to:`, newImplName);
 }
 

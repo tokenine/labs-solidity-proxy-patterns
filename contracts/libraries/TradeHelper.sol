@@ -32,22 +32,24 @@ library TradeHelper {
         address indexed bidder,
         uint256 indexed tokenId,
         uint256 price,
-        address quoteTokenAddr
+        address quoteTokenAddr,
+        uint256 timestamp
     );
 
-    event CancelBidToken(address indexed bidder, uint256 indexed tokenId);
+    event CancelBidToken(address indexed bidder, uint256 indexed tokenId, uint256 timestamp);
 
     function updateBidPrice(
         address _sender,
         uint256 _tokenId,
         uint256 _price,
         mapping(address => EnumerableMap.UintToUintMap) storage _userBids,
-        mapping(uint256 => BidHelper.BidEntry[]) storage _tokenBids        
+        mapping(uint256 => BidHelper.BidEntry[]) storage _tokenBids
     ) public {
         require(
             _userBids[_sender].contains(_tokenId),
             "Only Bidder can update the bid price"
         );
+        require (_price <=  _asksMap.get(_tokenId), "Offer must be less than sell price");
         require(_price != 0, "Price must be granter than zero");
         address _to = _sender; // find  bid and the index
         (BidHelper.BidEntry memory bidEntry, uint256 _index) =
@@ -72,7 +74,7 @@ library TradeHelper {
             price: _price,
             quoteTokenAddr: bidEntry.quoteTokenAddr
         });
-        emit Bid(_sender, _tokenId, _price, bidEntry.quoteTokenAddr);
+        emit Bid(_sender, _tokenId, _price, bidEntry.quoteTokenAddr, block.timestamp);
     }
 
     function delBidByTokenIdAndIndex(
@@ -106,7 +108,7 @@ library TradeHelper {
         require(bidEntry.price != 0, "Bidder does not exist");
         IERC20Upgradeable(bidEntry.quoteTokenAddr).transfer(_sender, bidEntry.price);
         delBidByTokenIdAndIndex(_tokenId, _index, _tokenBids, _userBids);
-        emit CancelBidToken(_sender, _tokenId);
+        emit CancelBidToken(_sender, _tokenId, block.timestamp);
     }
 
     function bidToken(
@@ -141,7 +143,7 @@ library TradeHelper {
                 quoteTokenAddr: quoteTokenAddr
             })
         );
-        emit Bid(_sender, _tokenId, _price, quoteTokenAddr);
+        emit Bid(_sender, _tokenId, _price, quoteTokenAddr, block.timestamp);
     }
 
     function trasnferSellMoney(

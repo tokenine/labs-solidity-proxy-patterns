@@ -41,20 +41,24 @@ async function main(): Promise<void> {
           artworkProxy,
           [busd, usdt],   
           feeAccount,
-          parseUnits('2',"gwei"),
-          parseUnits('3',"gwei")
+          parseUnits('2',"wei"),
+          parseUnits('3',"wei")
         ],
         { initializer: 'initialize',
         // unsafeAllowLinkedLibraries: true,
-        unsafeAllow: ['external-library-linking']
-      }
+          unsafeAllow: ['external-library-linking']
+        }
           // unsafeAllow: [external-library-linking]}
         );
     await BidNFTResult.deployed();
 
+    console.log("------------------ii---------ii---------------------")
+    console.log("----------------------------------------------------")
+    console.log("------------------ii---------ii---------------------")
+    console.log("We may update these following addresses at hardhatconfig.ts ")
+    console.log("----------------------------------------------------")
 
-
-    console.log("BidNFT deployed to:", BidNFTResult.address);
+    console.log("BidNFT(bidnft) deployed to:", BidNFTResult.address);
 }
 
 main()
