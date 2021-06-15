@@ -1,13 +1,15 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
-import {parseEther, formatUnits } from 'ethers/lib/utils';
+import {parseEther,parseUnits, formatUnits} from 'ethers/lib/utils';
 
   
   
   const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const {deployments, getNamedAccounts, network} = hre;
-    const {deploy, log, execute } = deployments;
-    const {deployer} = await getNamedAccounts();
+    const {deploy, log, execute, get } = deployments;
+    const {
+      deployer,
+    } = await getNamedAccounts();
 
   
     log(`Deploying contracts with the account: ${deployer}`);
@@ -19,32 +21,18 @@ import {parseEther, formatUnits } from 'ethers/lib/utils';
   
     log(`Network Name: ${network.name}`);
     log("----------------------------------------------------")
-  
 
-    // const boxResult = await deploy('Box', {
-    //   contract: 'BoxV2', 
-    //   from: deployer,
-    // //   proxy: 'true',
-    // //   proxy: 'initialize',
-    //   proxy: {
-    //     owner: deployer,
-    //     methodName: 'initialize',
-    //     proxyContract: 'OpenZeppelinTransparentProxy'
-    //   },
-    //   args: [42],
-    //   log: true,
-    // });
 
-    const Box = await hre.ethers.getContractFactory("Box");
-    const boxResult = await hre.upgrades.deployProxy(
-        Box,
-        [42],
-        { initializer: 'initialize' }
-        );
-    await boxResult.deployed();
 
-    console.log("Box deployed to:", boxResult.address);
+    const AskHelperLibrary = await deploy("AskHelper", {
+      from: deployer,
+      log: true
+    });
 
+    const TradeHelperLibrary = await deploy("TradeHelper", {
+      from: deployer,
+      log: true
+    });
 
 
     log("------------------ii---------ii---------------------")
@@ -54,10 +42,12 @@ import {parseEther, formatUnits } from 'ethers/lib/utils';
     log("----------------------------------------------------")
 
 
+    if (AskHelperLibrary.newlyDeployed) {
+      log(`AskHelper library address (askhelper): ${AskHelperLibrary.address} at key askhelper `);
+    }
 
-
-    if (boxResult.newlyDeployed) {
-      log(`Box contract address (box): ${boxResult.address} at key Box `);
+    if (TradeHelperLibrary.newlyDeployed) {
+      log(`TradeHelper library address (tradehelper): ${TradeHelperLibrary.address} at key tradehelper `);
     }
 
 
@@ -66,5 +56,5 @@ import {parseEther, formatUnits } from 'ethers/lib/utils';
   
   };
   export default func;
-  func.tags = ["2-1", 'box'];
-//   func.dependencies = ['tokens']
+  func.tags = ["3-1", 'libraries'];
+  func.dependencies = ['testtokens', 'artwork']

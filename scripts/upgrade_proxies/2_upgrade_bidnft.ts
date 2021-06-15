@@ -14,14 +14,14 @@ import {
 async function main(): Promise<void> {
 
 
-  const { boxProxy } = await getNamedAccounts();
+  const { bidnftProxy } = await getNamedAccounts();
 
-  const newImplName = 'BoxV3';
+  const newImplName = 'BidNFTV2';
   const NewImpl = await ethers.getContractFactory(newImplName);
   console.log(`Upgrading to ${newImplName}...`);
 
-  await upgrades.upgradeProxy(boxProxy, NewImpl);
-  console.log(`Box upgraded to:`, newImplName);
+  await upgrades.upgradeProxy(bidnftProxy, NewImpl);
+  console.log(`BidNFT upgraded to:`, newImplName);
 }
 
 main()

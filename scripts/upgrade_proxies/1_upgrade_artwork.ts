@@ -14,17 +14,14 @@ import {
 async function main(): Promise<void> {
 
 
+  const { artworkProxy } = await getNamedAccounts();
 
+  const newImplName = 'ArtworkNFTV2';
+  const NewImpl = await ethers.getContractFactory(newImplName);
+  console.log(`Upgrading to ${newImplName}...`);
 
-    const Box = await ethers.getContractFactory("Box");
-    const boxResult = await upgrades.deployProxy(
-        Box,
-        [42],
-        { initializer: 'initialize' }
-        );
-    await boxResult.deployed();
-
-    console.log("Box deployed to:", boxResult.address);
+  await upgrades.upgradeProxy(artworkProxy, NewImpl);
+  console.log(`ArtworkNFT upgraded to:`, newImplName);
 }
 
 main()

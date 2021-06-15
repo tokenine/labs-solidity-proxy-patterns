@@ -228,19 +228,16 @@ After each step, **hardhat.config.ts** needs to be updated regarding to newly de
 yarn hardhat --network hardhat deploy --tags testtokens
 ```
 
-```
-yarn hardhat --network hardhat deploy --tags tokens
-```
 
 ```
-yarn hardhat --network bscTestnet deploy --tags tokens
+yarn hardhat --network bscTestnet deploy --tags testtokens
 ```
 
 (Note: After the script has been sucessfully run, we may either need to or choose to update deployed contract addresses at `helper-hardhat-config.ts` as specified in command line in the desired network)
 
-2) Deploy contract
+2) Deploy Artwork contract
 ```
-yarn hardhat --network hardhat deploy --tags 'box'
+yarn hardhat --network hardhat deploy --tags 'artwork'
 ```
 
 ```
@@ -255,8 +252,21 @@ yarn hardhat --network bscTestnet deploy --tags 2-1
 If we messed up, we may redepoly by simply go to `/Deployments` and delete history data eg. `/bscTestnet` and run the scripts again
 :::
 
+# 6. Running Stand alone deploy and upgrade proxy scripts
 
-# 5. Running Manual Tasks
+```
+yarn hardhat --network hardhat run scripts/artwork/deploy_proxy.ts
+```
+
+```
+yarn hardhat --network hardhat run scripts/artwork/upgrade_proxy.ts
+```
+
+```
+yarn hardhat --network bscTestnet run scripts/artwork/upgrade_proxy.ts
+```
+
+# 6. Running Manual Tasks
 
 All **tasks** are written in `/tasks` folder
 
@@ -286,7 +296,7 @@ yarn hardhat verify --network bscTestnet 0x016da3cdc716b4382baa2910bf5534658a7b9
 yarn hardhat --network bscTestnet upgrade --name  BoxV2
 ```
 
-# 5. TDD Scripts
+# 7. TDD Scripts
 
 adding the --logs after your test command.
 

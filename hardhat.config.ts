@@ -29,36 +29,76 @@ const config: HardhatUserConfig = {
 
   namedAccounts: {
     deployer: 0,
-    user1: 1,
-    attacker: 2,
+    feeAccount: 1,
 
     ///-------------------tag---tokens-------------------///
     zero: "0x0000000000000000000000000000000000000000",
     busd: {
-      31337: "0xeb3273FcfaBc607FA504Ac5A6d77B78908C9244E", // Mapped from  .openzeppelin
+      31337: "0xeb3273FcfaBc607FA504Ac5A6d77B78908C9244E", // Mapped from  BasicToken
       56: "0x0000000000000000000000000000000000000000", //TODO
-      97: "0xF9FA987240cFAA31fD11194A522C49201B087ca8",
+      97: "0xF8a9E034a6F54fD3c73B1e666B85Bd42927901F2",
     },
 
-    boxProxy: {
-      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+    usdt: {
+      31337: "0xd2b8B2d4cEf783a8fAcbaaeB08Df4d0a9Fa5077D", // Mapped from   BasicToken
       56: "0x0000000000000000000000000000000000000000", //TODO
-      97: "0x52A37AeF628729C73a09229616333364B55562E1",
+      97: "0xFf8076a99d956BdA7855273A351ee0993643Dc7D",
     },
 
-    boxv1: {
-      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+    artwork: {
+      31337: "0xC9F4AC0f1998223b9a9726e6EbF3F5043433DD33", // Mapped from   ArtworkNFT
       56: "0x0000000000000000000000000000000000000000", //TODO
-      97: "0x19D465f4b1A6fb3b8497EedF6F803Aad15CeaC3E",
+      97: "0x349AE1211F02c1e5EcdcD1158BbfD61CBE34ad96",
     },
 
-    boxv2: {
+    askhelper: {
+      31337: "0x28bB7A7928dCFe5274baB80bbF22838C6B9FDA18", // Mapped from   BidNFT
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0x8e6BDA3D7653E1711BAf82B0a7D666D9C3Ea6579",
+    },
+
+    tradehelper: {
+      31337: "0x2865941758E4530407B09920c51Cce5e0EA9B7bD", // Mapped from   BidNFT
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0xffEc43813b9Dd3C8e7eeD3d7a4a4064AA82EEFf0",
+    },
+
+
+    bidnft: {
+      31337: "0x63C628733E650d813D2511b7c34695e1eD496361", // Mapped from   BidNFT
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0x99A206aB332d8c7c29a3415ea5C8F4F589bb3CAC",
+    },
+
+    artworkProxy: {
       31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
       56: "0x0000000000000000000000000000000000000000", //TODO
-      97: "0xCE6e7697c27524f798905baF47b166456BFc2408",
+      97: "0x1078a019bC8adDC5eA006242c9A954649c6a61FC",
     },
+
+    bidnftProxy: {
+      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0x46F7cfCbA86aBB4B0eD71b7c2Dfc193E9B4862a8",
+    },
+
+    artworkV1: {
+      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0x02a91aF1Ecd53D1446A665ab713f57e8418e7903",
+    },
+
+
+    bidnftV1: {
+      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0xEc9F5Bd660621A7133182a5B578c394662A532AB",
+    },
+
     
 
+    
+  
 
 
   },
@@ -153,15 +193,15 @@ const config: HardhatUserConfig = {
       //     }
       //   }
       // },
-      // {
-      //   version: "0.6.6",
-      //   settings: {
-      //     optimizer: {
-      //       enabled: true,
-      //       runs: 200
-      //     }
-      //   }
-      // },
+      {
+        version: "0.6.6",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          }
+        }
+      },
 
       {
         version: "0.8.0",
@@ -196,10 +236,6 @@ const config: HardhatUserConfig = {
     timeout: 70000
   },
   
-  tenderly: {
-    username: "Ratimon",
-    project: "jrepo"
-  }
   
   
 };
