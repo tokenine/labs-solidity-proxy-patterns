@@ -2,7 +2,7 @@
 
 ## Deployments
 
-All **deployment scripts** are written in `/tasks` folder
+All **deployment scripts** are written in `/deploy` folder
 
 We speify **The network** to deploy the smart contract with  **--network** as parameter
 
@@ -36,12 +36,23 @@ yarn hardhat --network hardhat deploy --tags 'artwork'
 ```
 
 ```
-yarn hardhat --network bscTestnet deploy --tags 'protocol'
+yarn hardhat --network bscTestnet deploy --tags 'artwork'
 ```
 Or we may run each sub-step using 
 ```
 yarn hardhat --network bscTestnet deploy --tags 2-1
 ```
+
+3.2) Deploy libraires required for BidNft contract
+```
+yarn hardhat --network hardhat deploy --tags 'bidnft'
+```
+
+3.2) Deploy BidNft contract
+```
+yarn hardhat --network hardhat deploy --tags 'libraries'
+```
+
 
 ::: tip
 If we messed up, we may redepoly by simply go to `/Deployments` and delete history data eg. `/bscTestnet` and run the scripts again

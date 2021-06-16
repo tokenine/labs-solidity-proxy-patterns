@@ -86,9 +86,13 @@ brew tap tenderly/tenderly
 brew install tenderly
 ```
 
-However, there is sometimes ploblem with  **hardhat-deploy-ethers** dependency. Here is a way to fix:
+However, there is sometimes problem with  **hardhat-deploy-ethers** dependency. Here is a way to fix:
 ```
 yarn add -D  @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers
+```
+But it sometimes does not work, try this:
+```
+yarn add -D  hardhat-deploy-ethers
 ```
 
 

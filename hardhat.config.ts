@@ -14,7 +14,8 @@ import '@nomiclabs/hardhat-waffle';
 import "hardhat-typechain";
 import '@openzeppelin/hardhat-upgrades';
 import 'hardhat-tracer';
-import "@tenderly/hardhat-tenderly"
+import "hardhat-log-remover"
+import "@tenderly/hardhat-tenderly";
 
 
 

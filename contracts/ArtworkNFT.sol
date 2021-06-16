@@ -33,27 +33,41 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
 
     mapping(uint256 => address) private _minter;
 
-    event Burn(address indexed sender, uint256 tokenId);
+    event Mint(
+        address indexed seller,
+        uint256 timestamp
+    );
+
+    event MintWithToken(
+        address indexed seller,
+        uint256 timestamp
+    );
+
+    event Burn(address indexed sender, uint256 tokenId, uint256 timestamp);
     event MintFeeAddressTransferred(
         address indexed previousOwner,
-        address indexed newOwner
+        address indexed newOwner,
+        uint256 timestamp
     );
     event SetMintFeeAmount(
         address indexed seller,
         uint256 oldMintFeeAmount,
-        uint256 newMintFeeAmount
+        uint256 newMintFeeAmount,
+        uint256 timestamp
     );
 
     event SetMintTokenFeeAmount(
         address indexed seller,
         uint256 oldMintTokenFeeAmount,
-        uint256 newMintTokenFeeAmount
+        uint256 newMintTokenFeeAmount,
+        uint256 timestamp
     );
 
     event SetMinTokenAddress(
         address indexed seller,
         address oldMinTokenAddress,
-        address newMinTokenAddress
+        address newMinTokenAddress,
+        uint256 timestamp
     );
 
     // constructor(
@@ -95,7 +109,6 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         __ERC721_init(name, symbol);
         __ERC721Pausable_init();
         __AccessControl_init();
-        // __Context_init();
         __Ownable_init();
 
         require(_mintTokenAddr != address(0));
@@ -110,11 +123,11 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         mintTokenFeeAmount = _mintTokenFeeAmount;
         nextTokenId = 1;
 
-        emit MintFeeAddressTransferred(address(0), mintFeeAddr);
-        emit SetMintFeeAmount(_msgSender(), 0, mintFeeAmount);
+        emit MintFeeAddressTransferred(address(0), mintFeeAddr, now);
+        emit SetMintFeeAmount(_msgSender(), 0, mintFeeAmount, now);
 
-        emit SetMinTokenAddress(_msgSender(), address(0), mintTokenAddr);
-        emit SetMintTokenFeeAmount(_msgSender(), 0, mintTokenFeeAmount);
+        emit SetMinTokenAddress(_msgSender(), address(0), mintTokenAddr, now);
+        emit SetMintTokenFeeAmount(_msgSender(), 0, mintTokenFeeAmount, now);
     }
 
     receive() external payable {}
@@ -131,12 +144,14 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         _minter[tokenId] = to;
         nextTokenId++;
         _setTokenURI(tokenId, _tokenURI);
+        _setMintTime(tokenId, now);
         if (msg.value > mintFeeAmount) {
             TransferHelper.safeTransferETH(
                 msg.sender,
                 msg.value - mintFeeAmount
             );
         }
+        emit Mint(_msgSender(), now);
 
     }
 
@@ -158,6 +173,8 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         _minter[tokenId] = to;
         nextTokenId++;
         _setTokenURI(tokenId, _tokenURI);
+        _setMintTime(tokenId, now);
+        emit MintWithToken(_msgSender(), now);
     }
 
     function burn(uint256 tokenId) external {
@@ -166,7 +183,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
             "caller is not owner nor approved"
         );
         _burn(tokenId);
-        emit Burn(_msgSender(), tokenId);
+        emit Burn(_msgSender(), tokenId, now);
     }
 
     function setBaseURI(string memory baseURI) public {
@@ -199,12 +216,12 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         require(_msgSender() == mintFeeAddr, "FORBIDDEN");
         require(_mintFeeAddr != address(0));
         mintFeeAddr = _mintFeeAddr;
-        emit MintFeeAddressTransferred(_msgSender(), mintFeeAddr);
+        emit MintFeeAddressTransferred(_msgSender(), mintFeeAddr, now);
     }
 
     function setMintFeeAmount(uint256 _mintFeeAmount) external onlyOwner {
         require(mintFeeAmount != _mintFeeAmount, "No need to update");
-        emit SetMintFeeAmount(_msgSender(), mintFeeAmount, _mintFeeAmount);
+        emit SetMintFeeAmount(_msgSender(), mintFeeAmount, _mintFeeAmount, now);
         mintFeeAmount = _mintFeeAmount;
     }
 
@@ -216,7 +233,8 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         emit SetMintTokenFeeAmount(
             _msgSender(),
             mintTokenFeeAmount,
-            _mintTokenFeeAmount
+            _mintTokenFeeAmount,
+            now
         );
         mintTokenFeeAmount = _mintTokenFeeAmount;
     }
@@ -224,7 +242,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
     function setMintTokenAddress(address _mintTokenAddr) external onlyOwner {
         require(_mintTokenAddr != address(0));
         require(mintTokenAddr != _mintTokenAddr, "No need to update");
-        emit SetMinTokenAddress(_msgSender(), mintTokenAddr, _mintTokenAddr);
+        emit SetMinTokenAddress(_msgSender(), mintTokenAddr, _mintTokenAddr, now);
         mintTokenAddr = _mintTokenAddr;
     }
 

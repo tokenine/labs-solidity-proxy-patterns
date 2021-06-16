@@ -27,8 +27,7 @@ yarn hardhat --network bscTestnet run scripts/deploy_proxies/3_deploy_bidnft.ts
 
 ## Upgrade Scripts
 
-
-1) Upgrade **Proxy ArtworkNFT Contract** with a stand alone script
+1) Upgrade **Proxy ArtworkNFT Contract** with :
 
 ```
 yarn hardhat --network bscTestnet run scripts/upgrade_proxies/1_upgrade_artwork.ts
@@ -36,10 +35,10 @@ yarn hardhat --network bscTestnet run scripts/upgrade_proxies/1_upgrade_artwork.
 
 (Note: After the script has been sucessfully run, we ,for easier life, should update deployed **Inplementation contract addresses** at `helper-hardhat-config.ts` as specified in `.openzeppelins` (eg **unknown-97.json**) in the desired network)
 
-2) Upgrade **Proxy BidNFt Contract** with a stand alone script
+2) Upgrade **Proxy BidNFt Contract** with :
 
 ::: tip
-We may redepoly **tradehelper** and **askhelper** libraries before run the scripts
+We may re-depoly **tradehelper** and **askhelper** libraries before run the scripts
 :::
 
 ```

@@ -57,4 +57,4 @@ import {parseEther,parseUnits, formatUnits} from 'ethers/lib/utils';
   };
   export default func;
   func.tags = ["3-1", 'libraries'];
-  // func.dependencies = ['testtokens', 'artwork']
+  func.dependencies = ['testtokens', 'artwork']

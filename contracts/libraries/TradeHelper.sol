@@ -43,13 +43,13 @@ library TradeHelper {
         uint256 _tokenId,
         uint256 _price,
         mapping(address => EnumerableMap.UintToUintMap) storage _userBids,
-        mapping(uint256 => BidHelper.BidEntry[]) storage _tokenBids
+        mapping(uint256 => BidHelper.BidEntry[]) storage _tokenBids        
     ) public {
         require(
             _userBids[_sender].contains(_tokenId),
             "Only Bidder can update the bid price"
         );
-        require (_price <=  _asksMap.get(_tokenId), "Offer must be less than sell price");
+        //require (_price <=  _asksMap.get(_tokenId), "Offer must be less than sell price");
         require(_price != 0, "Price must be granter than zero");
         address _to = _sender; // find  bid and the index
         (BidHelper.BidEntry memory bidEntry, uint256 _index) =
@@ -72,9 +72,10 @@ library TradeHelper {
         _tokenBids[_tokenId][_index] = BidHelper.BidEntry({
             bidder: _to,
             price: _price,
-            quoteTokenAddr: bidEntry.quoteTokenAddr
+            quoteTokenAddr: bidEntry.quoteTokenAddr,
+            timestamp: now
         });
-        emit Bid(_sender, _tokenId, _price, bidEntry.quoteTokenAddr, block.timestamp);
+        emit Bid(_sender, _tokenId, _price, bidEntry.quoteTokenAddr, now);
     }
 
     function delBidByTokenIdAndIndex(
@@ -108,7 +109,7 @@ library TradeHelper {
         require(bidEntry.price != 0, "Bidder does not exist");
         IERC20Upgradeable(bidEntry.quoteTokenAddr).transfer(_sender, bidEntry.price);
         delBidByTokenIdAndIndex(_tokenId, _index, _tokenBids, _userBids);
-        emit CancelBidToken(_sender, _tokenId, block.timestamp);
+        emit CancelBidToken(_sender, _tokenId, now);
     }
 
     function bidToken(
@@ -126,6 +127,7 @@ library TradeHelper {
             _sender != address(0) && _sender != _contract,
             "Wrong msg sender"
         );
+        //require (_price <=  _asksMap.get(_tokenId), "Offer must be less than sell price");
         require(_price != 0, "Price must be granter than zero");
         require(_asksMap.contains(_tokenId), "Token not in sell book");
         address _seller = _tokenSellers[_tokenId];
@@ -140,10 +142,11 @@ library TradeHelper {
             BidHelper.BidEntry({
                 bidder: _to,
                 price: _price,
-                quoteTokenAddr: quoteTokenAddr
+                quoteTokenAddr: quoteTokenAddr,
+                timestamp: now
             })
         );
-        emit Bid(_sender, _tokenId, _price, quoteTokenAddr, block.timestamp);
+        emit Bid(_sender, _tokenId, _price, quoteTokenAddr, now);
     }
 
     function trasnferSellMoney(

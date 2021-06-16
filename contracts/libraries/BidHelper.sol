@@ -13,6 +13,7 @@ library BidHelper {
         address bidder;
         uint256 price;
         address quoteTokenAddr;
+        uint256 timestamp;
     }
 
     struct UserBidEntry {
@@ -34,6 +35,7 @@ library BidHelper {
                 tokenId: tokenId,
                 price: price,
                 quoteTokenAddr: _asksQuoteTokens[tokenId]
+                
             });
         }
         return bids;
@@ -55,7 +57,8 @@ library BidHelper {
                 bidEntry = BidEntry({
                     bidder: bidEntries[i].bidder,
                     price: bidEntries[i].price,
-                    quoteTokenAddr: bidEntries[i].quoteTokenAddr
+                    quoteTokenAddr: bidEntries[i].quoteTokenAddr,
+                    timestamp: bidEntries[i].timestamp
                 });
                 break;
             }

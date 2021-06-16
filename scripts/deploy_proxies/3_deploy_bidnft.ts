@@ -41,8 +41,8 @@ async function main(): Promise<void> {
           artworkProxy,
           [busd, usdt],   
           feeAccount,
-          parseUnits('2',"wei"),
-          parseUnits('3',"wei")
+          parseUnits('2.5','ether'),
+          parseUnits('5','ether')
         ],
         { initializer: 'initialize',
         // unsafeAllowLinkedLibraries: true,

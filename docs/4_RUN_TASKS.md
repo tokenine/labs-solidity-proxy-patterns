@@ -20,9 +20,21 @@ yarn hardhat --network bscTestnet block-number
 ```
 
 4) **verify** - verify the inplement contract
+```
 yarn hardhat verify --network bscTestnet 0x016da3cdc716b4382baa2910bf5534658a7b9584
+```
 
-5) **upgrade** - upgrade the proxy contract
+5) **Remove** Hardhat console.log imports and calls from Solidity source code.
+
+Run the Hardhat task manually:
+```
+yarn run hardhat remove-logs
+```
+Before removing logs, the plugin will ensure that all contracts can be compiled successfully
+
+6) **upgrade** - upgrade the proxy contract
 ```
 yarn hardhat --network bscTestnet upgrade --name  BidNFTV2
 ```
+
+**Param: name** : Smart contract `Name` from `/contracts` folder
