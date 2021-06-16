@@ -21,7 +21,7 @@ contract BasicToken is ERC20Upgradeable {
         string memory name,
         string memory symbol,
         uint256 supply
-    ) initializer public {
+    ) initializer public virtual {
         __ERC20_init(name, symbol);
         _mint(msg.sender, supply);
     }

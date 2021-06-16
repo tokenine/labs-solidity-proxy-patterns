@@ -65,7 +65,8 @@ import {parseEther,parseUnits, formatUnits} from 'ethers/lib/utils';
 
 
     const BidNFTResult = await deploy('BidNFT', {
-      contract: 'BidNFT', 
+      // contract: 'BidNFT', 
+      contract: 'BidNFTV2', 
       from: deployer,
       args: [],
       log: true,
@@ -83,6 +84,7 @@ import {parseEther,parseUnits, formatUnits} from 'ethers/lib/utils';
 
     log(`BidNFT contract address (BidNFT): ${BidNFTResult.address} at key artwork `);
     await execute(
+      // 'BidNFTV2',
       'BidNFT',
       {from: deployer, log: true},
       "initialize",
@@ -93,8 +95,8 @@ import {parseEther,parseUnits, formatUnits} from 'ethers/lib/utils';
       // hre.ethers.BigNumber.from("3.0"),
       // parseUnits(2),
       // parseUnits(3)
-      parseUnits('2',"wei"),
-      parseUnits('3',"wei"),
+      parseUnits('2.5',"ether"),
+      parseUnits('5',"ether"),
       );
 
 

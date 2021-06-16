@@ -51,7 +51,7 @@ async function main(): Promise<void> {
     console.log("----------------------------------------------------")
 
 
-    console.log("ArtworkNFT(artwork) deployed to:", ArtworkResult.address);
+    console.log("ArtworkNFT(artworkProxy) deployed to:", ArtworkResult.address);
 }
 
 main()

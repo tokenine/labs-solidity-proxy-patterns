@@ -58,7 +58,7 @@ async function main(): Promise<void> {
     console.log("We may update these following addresses at hardhatconfig.ts ")
     console.log("----------------------------------------------------")
 
-    console.log("BidNFT(bidnft) deployed to:", BidNFTResult.address);
+    console.log("BidNFT(bidnftProxy) deployed to:", BidNFTResult.address);
 }
 
 main()

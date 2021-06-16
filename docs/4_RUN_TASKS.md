@@ -21,7 +21,7 @@ yarn hardhat --network bscTestnet block-number
 
 4) **verify** - verify the inplement contract
 ```
-yarn hardhat verify --network bscTestnet 0x016da3cdc716b4382baa2910bf5534658a7b9584
+yarn hardhat verify --network bscTestnet 0x7b9b94ebA3f586858382641126589c219bAb34ab
 ```
 
 5) **Remove** Hardhat console.log imports and calls from Solidity source code.

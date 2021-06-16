@@ -40,6 +40,7 @@ library TradeHelper {
 
     function updateBidPrice(
         address _sender,
+        EnumerableMap.UintToUintMap storage _endTimeMap,
         uint256 _tokenId,
         uint256 _price,
         mapping(address => EnumerableMap.UintToUintMap) storage _userBids,
@@ -56,6 +57,7 @@ library TradeHelper {
             BidHelper.getBidByTokenIdAndAddress(_tokenBids, _tokenId, _to);
         require(bidEntry.price != 0, "Bidder does not exist");
         require(bidEntry.price != _price, "The bid price cannot be the same");
+        require(_endTimeMap.get(_tokenId) > now, "The end time have passed");
         if (_price > bidEntry.price) {
             IERC20Upgradeable(bidEntry.quoteTokenAddr).safeTransferFrom(
                 address(_sender),
@@ -116,6 +118,7 @@ library TradeHelper {
         address _sender,
         address _contract,
         EnumerableMap.UintToUintMap storage _asksMap,
+        EnumerableMap.UintToUintMap storage _endTimeMap,
         mapping(address => EnumerableMap.UintToUintMap) storage _userBids,
         mapping(uint256 => BidHelper.BidEntry[]) storage _tokenBids,
         mapping(uint256 => address) storage _asksQuoteTokens,
@@ -134,6 +137,7 @@ library TradeHelper {
         address _to = address(_sender);
         require(_seller != _to, "Owner cannot bid");
         require(!_userBids[_to].contains(_tokenId), "Bidder already exists");
+        require(_endTimeMap.get(_tokenId) > now, "The end time have passed");
 
         address quoteTokenAddr = _asksQuoteTokens[_tokenId];
         IERC20Upgradeable(quoteTokenAddr).safeTransferFrom(_sender, _contract, _price);

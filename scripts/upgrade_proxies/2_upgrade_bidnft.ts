@@ -39,7 +39,7 @@ async function main(): Promise<void> {
       unsafeAllow: ['external-library-linking']
     }
     );
-  console.log(`BidNFT upgraded to:`, newImplName);
+  console.log(`BidNFT (bidnftProxy) upgraded to:`, newImplName);
 }
 
 main()

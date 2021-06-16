@@ -3,6 +3,7 @@
 # compiled output
 /artifacts
 /.openzeppelin
+/deployments
 /cache
 /dist
 /typechain

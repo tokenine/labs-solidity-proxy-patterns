@@ -21,7 +21,7 @@ async function main(): Promise<void> {
   console.log(`Upgrading to ${newImplName}...`);
 
   await upgrades.upgradeProxy(artworkProxy, NewImpl);
-  console.log(`ArtworkNFT upgraded to:`, newImplName);
+  console.log(`ArtworkNFT (artworkProxy) upgraded to:`, newImplName);
 }
 
 main()

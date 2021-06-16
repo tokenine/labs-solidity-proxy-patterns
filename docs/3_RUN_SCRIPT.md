@@ -7,7 +7,7 @@
 yarn hardhat --network bscTestnet run scripts/deploy_proxies/1_deploy_artwork.ts
 ```
 
-(Note: After the script has been sucessfully run, we may  choose to update deployed **Proxy contract addresses** at `helper-hardhat-config.ts` as specified in `.openzeppelins` (eg **unknown-97.json**) in the desired network)
+(Note: After the script has been sucessfully run, we may  choose to update deployed **Proxy contract addresses** at `hardhat.config.ts` as specified in `.openzeppelins` (eg **unknown-97.json**) in the desired network)
 
 2) Deploy Required **libraries** 
 
@@ -15,7 +15,7 @@ yarn hardhat --network bscTestnet run scripts/deploy_proxies/1_deploy_artwork.ts
 yarn hardhat --network bscTestnet run scripts/deploy_proxies/2_deploy_libraries.ts
 ```
 
-(Note: After the script has been sucessfully run, we need to update deployed **tradehelper** and **askhelper** addresses at `helper-hardhat-config.ts` as specified in terminal in the desired network)
+(Note: After the script has been sucessfully run, we need to update deployed **tradehelper** and **askhelper** addresses at `hardhat.config.ts` as specified in terminal in the desired network)
 
 3) Deploy **Proxy BidNFt Contract** with a stand alone script
 
@@ -23,7 +23,7 @@ yarn hardhat --network bscTestnet run scripts/deploy_proxies/2_deploy_libraries.
 yarn hardhat --network bscTestnet run scripts/deploy_proxies/3_deploy_bidnft.ts
 ```
 
-(Note: After the script has been sucessfully run, we again may  update deployed **Proxy contract addresses** at `helper-hardhat-config.ts`)
+(Note: After the script has been sucessfully run, we again may  update deployed **Proxy contract addresses** at `hardhat.config.ts`)
 
 ## Upgrade Scripts
 
@@ -33,9 +33,17 @@ yarn hardhat --network bscTestnet run scripts/deploy_proxies/3_deploy_bidnft.ts
 yarn hardhat --network bscTestnet run scripts/upgrade_proxies/1_upgrade_artwork.ts
 ```
 
-(Note: After the script has been sucessfully run, we ,for easier life, should update deployed **Inplementation contract addresses** at `helper-hardhat-config.ts` as specified in `.openzeppelins` (eg **unknown-97.json**) in the desired network)
+(Note: After the script has been sucessfully run, we ,for easier life, should update deployed **Inplementation contract addresses** at `hardhat.config.ts` as specified in `.openzeppelins` (eg **unknown-97.json**) in the desired network)
 
-2) Upgrade **Proxy BidNFt Contract** with :
+2) Deploy Required **libraries** if updated
+
+```
+yarn hardhat --network bscTestnet run scripts/deploy_proxies/2_deploy_libraries.ts
+```
+
+Then update addresses at `hardhat.config.ts`
+
+3) Upgrade **Proxy BidNFt Contract** with :
 
 ::: tip
 We may re-depoly **tradehelper** and **askhelper** libraries before run the scripts

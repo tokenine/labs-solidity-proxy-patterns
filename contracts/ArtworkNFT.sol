@@ -106,7 +106,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         uint256 _mintFeeAmount,
         address _mintTokenAddr,
         uint256 _mintTokenFeeAmount
-    ) initializer public {
+    ) initializer public virtual {
 
         __ERC721_init(name, symbol);
         __ERC721Pausable_init();
@@ -136,6 +136,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
 
     function mint(address to, string memory _tokenURI)
         public
+        virtual
         payable
         returns (uint256 tokenId)
     {
@@ -159,6 +160,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
 
     function mintWithToken(address to, string memory _tokenURI)
         public
+        virtual
         returns (uint256 tokenId)
     {
         require(
@@ -179,7 +181,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         emit MintWithToken(_msgSender(), now);
     }
 
-    function burn(uint256 tokenId) external {
+    function burn(uint256 tokenId) external virtual {
         require(
             _isApprovedOrOwner(_msgSender(), tokenId),
             "caller is not owner nor approved"
@@ -189,7 +191,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         emit Burn(_msgSender(), tokenId, now);
     }
 
-    function setBaseURI(string memory baseURI) public {
+    function setBaseURI(string memory baseURI) public virtual {
         require(
             hasRole(UPDATE_TOKEN_URI_ROLE, _msgSender()),
             "Must have update token uri role"
@@ -197,7 +199,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         _setBaseURI(baseURI);
     }
 
-    function setTokenURI(uint256 tokenId, string memory tokenURI) public {
+    function setTokenURI(uint256 tokenId, string memory tokenURI) public virtual {
         require(
             hasRole(UPDATE_TOKEN_URI_ROLE, _msgSender()),
             "Must have update token uri role"
@@ -205,24 +207,24 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         _setTokenURI(tokenId, tokenURI);
     }
 
-    function pause() external whenNotPaused {
+    function pause() external virtual whenNotPaused {
         require(hasRole(PAUSED_ROLE, _msgSender()), "Must have pause role");
         _pause();
     }
 
-    function unpause() external whenPaused {
+    function unpause() external virtual whenPaused {
         require(hasRole(PAUSED_ROLE, _msgSender()), "Must have pause role");
         _unpause();
     }
 
-    function transferMintFeeAddress(address _mintFeeAddr) external {
+    function transferMintFeeAddress(address _mintFeeAddr) external virtual {
         require(_msgSender() == mintFeeAddr, "FORBIDDEN");
         require(_mintFeeAddr != address(0));
         mintFeeAddr = _mintFeeAddr;
         emit MintFeeAddressTransferred(_msgSender(), mintFeeAddr, now);
     }
 
-    function setMintFeeAmount(uint256 _mintFeeAmount) external onlyOwner {
+    function setMintFeeAmount(uint256 _mintFeeAmount) external virtual onlyOwner {
         require(mintFeeAmount != _mintFeeAmount, "No need to update");
         emit SetMintFeeAmount(_msgSender(), mintFeeAmount, _mintFeeAmount, now);
         mintFeeAmount = _mintFeeAmount;
@@ -230,6 +232,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
 
     function setMintTokenFeeAmount(uint256 _mintTokenFeeAmount)
         external
+        virtual
         onlyOwner
     {
         require(mintTokenFeeAmount != _mintTokenFeeAmount, "No need to update");
@@ -242,19 +245,18 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         mintTokenFeeAmount = _mintTokenFeeAmount;
     }
 
-    function setMintTokenAddress(address _mintTokenAddr) external onlyOwner {
+    function setMintTokenAddress(address _mintTokenAddr) external virtual onlyOwner {
         require(_mintTokenAddr != address(0));
         require(mintTokenAddr != _mintTokenAddr, "No need to update");
         emit SetMinTokenAddress(_msgSender(), mintTokenAddr, _mintTokenAddr, now);
         mintTokenAddr = _mintTokenAddr;
     }
 
-    function minterOf(uint256 _tokenId) external view returns (address) {
+    function minterOf(uint256 _tokenId) external virtual view returns (address) {
         return _minter[_tokenId];
     }
-}
 
-    function mintTime(uint256 tokenId) public view returns (uint256) {
+    function mintTime(uint256 tokenId) public virtual view returns (uint256) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
         uint256 _mintTime = _mintTimes[tokenId];
         return _mintTime;
