@@ -33,6 +33,8 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
 
     mapping(uint256 => address) private _minter;
 
+    mapping (uint256 => uint256) private _mintTimes;
+
     event Mint(
         address indexed seller,
         uint256 timestamp
@@ -183,6 +185,7 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
             "caller is not owner nor approved"
         );
         _burn(tokenId);
+        delete _mintTimes[tokenId];
         emit Burn(_msgSender(), tokenId, now);
     }
 
@@ -248,5 +251,17 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
 
     function minterOf(uint256 _tokenId) external view returns (address) {
         return _minter[_tokenId];
+    }
+}
+
+    function mintTime(uint256 tokenId) public view returns (uint256) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+        uint256 _mintTime = _mintTimes[tokenId];
+        return _mintTime;
+    }
+
+    function _setMintTime(uint256 tokenId, uint256 _mintTime) internal virtual {
+        require(_exists(tokenId), "ERC721Metadata: URI set of nonexistent token");
+        _mintTimes[tokenId] = _mintTime;
     }
 }
