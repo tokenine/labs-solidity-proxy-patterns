@@ -66,7 +66,7 @@ import {parseEther,parseUnits, formatUnits} from 'ethers/lib/utils';
 
     const BidNFTResult = await deploy('BidNFT', {
       // contract: 'BidNFT', 
-      contract: 'BidNFTV2', 
+      contract: 'BidNFTV3', 
       from: deployer,
       args: [],
       log: true,

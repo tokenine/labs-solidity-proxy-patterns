@@ -20,7 +20,7 @@ async function main(): Promise<void> {
   } = await getNamedAccounts();
 
 
-  const newImplName = 'BidNFTV2';
+  const newImplName = 'BidNFTV4';
   const NewImpl = await ethers.getContractFactory(
     newImplName,
     {

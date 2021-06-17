@@ -43,7 +43,7 @@ Or we may run each sub-step using
 yarn hardhat --network bscTestnet deploy --tags 2-1
 ```
 
-3.2) Deploy libraires required for BidNft contract
+3.1) Deploy libraires required for BidNft contract
 ```
 yarn hardhat --network hardhat deploy --tags 'bidnft'
 ```

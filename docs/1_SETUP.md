@@ -43,7 +43,7 @@ In the same directory where you installed **Hardhat** add a `hardhat.config.ts` 
 import {HardhatUserConfig} from 'hardhat/types';
 const config: HardhatUserConfig = {
   solidity: {
-    version: '0.5.17',
+    version: '0.6.6',
   }
 };
 export default config;
@@ -130,6 +130,7 @@ We need to create the following `.gitignore` :
 # compiled output
 /artifacts
 /.openzeppelin
+/deployments
 /cache
 /dist
 /typechain
@@ -192,17 +193,3 @@ We can go to [vanity-eth](https://vanity-eth.tk/) in order to generate such Priv
 
 We could ask mock BNB for testing purpose by go to
 [testnet.binance.org](https://testnet.binance.org/faucet-smart) 
-
-
-
-# 3. compiling smart contracts
-
-## Compiling contracts
-
-To compile the contract run `yarn hardhat compile` in your terminal. The `compile` task is one of the built-in tasks.
-
-```
-$ yarn hardhat compile
-Compiling 1 file with 0.5.19
-Compilation finished successfully
-```

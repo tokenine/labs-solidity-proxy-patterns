@@ -109,6 +109,21 @@ const config: HardhatUserConfig = {
       56: "0x0000000000000000000000000000000000000000", //TODO
       97: "0x7b9b94ebA3f586858382641126589c219bAb34ab",
     },
+
+
+    bidnftV3: {
+      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0xe989bA4C75316341074313AF9bA12AeCFCe4505C",
+    },
+
+    bidnftV4: {
+      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0x0Dfcf6Ee422a50D84C0C31621d205aEa2567443b",
+    },
+
+
     
   
 
@@ -166,7 +181,7 @@ const config: HardhatUserConfig = {
     // },
 
     bscTestnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+      url: "https://data-seed-prebsc-1-s2.binance.org:8545/",
       chainId: 97,
       gasPrice: 20000000000,
       // accounts: [`0x${PRIVATE_KEY}`]

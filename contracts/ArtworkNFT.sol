@@ -1,22 +1,14 @@
 pragma solidity =0.6.6;
 
-// import "@openzeppelin/contracts/access/AccessControl.sol";
-// import "@openzeppelin/contracts/access/Ownable.sol";
-// import "@openzeppelin/contracts/token/ERC721/ERC721Pausable.sol";
-// import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-// import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-// import "./libraries/TransferHelper.sol";
 
 import "./openzeppelin/access/AccessControlUpgradeable.sol";
 import "./openzeppelin/access/OwnableUpgradeable.sol";
 import "./openzeppelin/token/ERC721/ERC721PausableUpgradeable.sol";
-// import "./openzeppelin/presets/ERC721PresetMinterPauserAutoIdUpgradeable.sol";
 
 import "./openzeppelin/token/ERC20/SafeERC20Upgradeable.sol";
 import "./openzeppelin/token/ERC20/IERC20Upgradeable.sol";
 import "./libraries/TransferHelper.sol";
 
-// contract ArtworkNFT is PresetMinterPauserAutoIdUpgradeablee, AccessControlUpgradeable, OwnableUpgradeable {
 contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, OwnableUpgradeable {
     using SafeERC20Upgradeable for IERC20Upgradeable;
 
@@ -72,36 +64,10 @@ contract ArtworkNFT is ERC721PausableUpgradeable, AccessControlUpgradeable, Owna
         uint256 timestamp
     );
 
-    // constructor(
-    //     string memory name,
-    //     string memory symbol,
-    //     address _mintFeeAddr,
-    //     uint256 _mintFeeAmount,
-    //     address _mintTokenAddr,
-    //     uint256 _mintTokenFeeAmount
-    // ) public ERC721(name, symbol) {
-    //     require(_mintTokenAddr != address(0));
-    //     require(_mintFeeAddr != address(0));
-
-    //     _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-    //     _setupRole(UPDATE_TOKEN_URI_ROLE, _msgSender());
-    //     _setupRole(PAUSED_ROLE, _msgSender());
-    //     mintFeeAddr = _mintFeeAddr;
-    //     mintFeeAmount = _mintFeeAmount;
-    //     mintTokenAddr = _mintTokenAddr;
-    //     mintTokenFeeAmount = _mintTokenFeeAmount;
-
-    //     emit MintFeeAddressTransferred(address(0), mintFeeAddr);
-    //     emit SetMintFeeAmount(_msgSender(), 0, mintFeeAmount);
-
-    //     emit SetMinTokenAddress(_msgSender(), address(0), mintTokenAddr);
-    //     emit SetMintTokenFeeAmount(_msgSender(), 0, mintTokenFeeAmount);
-    // }
 
     function initialize(
         string memory name,
         string memory symbol,
-        // uint256 _initialTokenId,
         address _mintFeeAddr,
         uint256 _mintFeeAmount,
         address _mintTokenAddr,
