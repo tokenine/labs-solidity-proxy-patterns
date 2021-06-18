@@ -123,6 +123,12 @@ const config: HardhatUserConfig = {
       97: "0x0Dfcf6Ee422a50D84C0C31621d205aEa2567443b",
     },
 
+    bidnftV5: {
+      31337: "0x0000000000000000000000000000000000000000", // Mapped from  .openzeppelin
+      56: "0x0000000000000000000000000000000000000000", //TODO
+      97: "0x0A8495d21E1264BB3eBE1DBF2E64b3BD8f2F562a",
+    },
+
 
     
   

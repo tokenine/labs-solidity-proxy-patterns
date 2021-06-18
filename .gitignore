@@ -2,7 +2,7 @@
 
 # compiled output
 /artifacts
-/.openzeppelin
+# /.openzeppelin
 /deployments
 /cache
 /dist
